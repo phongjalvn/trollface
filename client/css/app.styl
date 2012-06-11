@@ -1,0 +1,323 @@
+// ====================================
+// Imports
+@import url(http://fonts.googleapis.com/css?family=Noticia+Text:400italic,400&subset=vietnamese,latin)
+
+// nib: http://visionmedia.github.com/nib/
+@import 'nib'
+
+global-reset()
+
+*
+  box-sizing: border-box
+// ====================================
+a
+  text-decoration: none
+  img
+    border: 0
+
+$green= #82C43A
+$red= #F5494C
+$blue= #659AE0
+$imageSize= 500px
+$thumbColor= $red
+$dotColor= rgba($blue, .7)
+$dotColorHover= rgba($green, .7)
+$thumbsize= 75px
+
+animated($time=.5s, $mode=all, $easing=ease, $delay=.2s)
+  transition: $time $mode $easing
+  transition-delay: $delay
+
+
+// Styles
+
+body
+  max-width: 780px
+  margin: 0 auto
+  padding: 20px 10px
+  background: lighten($blue, 30%) url('/images/blueprint.png')
+  font-family: 'Noticia Text', serif
+  font-style:italic
+
+
+.main
+  absolute: top 30px left 30px
+  bottom: 30px
+  right: 30px
+  padding: 80px 20px 20px
+  border-radius: 5px
+  border: 5px solid #fff
+  box-shadow: 3px 3px 10px rgba(0,0,0,.3)
+  background-color: #333
+
+header
+  padding: 0
+  line-height: 50px!important
+  height: 50px
+  left: -20px
+  right: -5px
+  margin-top: -60px
+  position: absolute
+  font-size: 16px
+  z-index:100
+  background-color: $blue
+  background-image: linear-gradient(top, $blue, #007bd2)
+  box-shadow: 0 3px 3px rgba(0,0,0,.3)
+
+  &:after
+    position: absolute
+    content: ''
+    width: 0
+    height: 0
+    line-height: 0
+    border-left: 15px solid transparent
+    border-top: 10px solid darken(#007bd2, 30%)
+    bottom: -10px
+    left: 0
+    position: absolute
+    z-index: -1
+
+  h1
+    display:block
+    border-top: 1px dashed #fff
+    border-bottom: 1px dashed #fff
+    line-height:40px
+    margin:4px 0 0
+    padding:0 40px
+    font-size:20px
+    background:rgba(255,255,255,.2)
+    color:#fff
+    text-shadow:1px 1px 0 rgba(0,0,0,.2)
+
+aside
+  background: lighten($blue, 50%)
+  box-shadow: inset 1px 1px 1px rgba(0,0,0,.3)
+  border-radius: 5px
+  padding: 5px
+  display: none
+  position: relative
+  z-index: 50
+  height: 100%
+  img
+    display: block
+    max-width: 90%
+    margin: 20px auto 160px
+    border: 5px solid white
+    box-shadow: 0 0 5px rgba(0,0,0,.5)
+
+form
+  background: #fff
+  border-radius: 4px
+  display: table
+  width: 100%
+  border-collapse: collapse
+  box-shadow: inset 2px 2px 3px rgba(0,0,0,.2)
+
+  input
+    border: 0
+    padding: 0
+    margin: 0
+    outline: 0
+
+  li
+    position: relative
+    border-bottom: 1px lighten($blue, 30%) solid
+
+    &:before, label, input
+      display: inline-block
+      font-family: 'Noticia Text'
+      font-size: 16px
+      background: transparent
+      color: lighten($blue, 20%)
+
+    &:before
+      content: "*"
+      width: 42px
+      line-height: 45px
+      text-align: center
+      color: $red
+      border-right: 1px solid $red
+
+    label, input
+      padding: 10px 15px
+      line-height: 22px
+
+    input
+      width: 500px
+
+    &.success:before
+      content: "✓"
+      color: lighten($blue, 20%)
+
+    &.error:before
+      content: "✘"
+
+
+.button
+  background-image:linear-gradient(top, rgba(0,0,0,0), rgba(0,0,0,0.1))
+  display:inline-block
+  vertical-align:middle
+  margin:2px
+  font:italic 18px/32px 'Noticia Text',Serif
+  text-align:center
+  color:white
+  text-decoration:none
+  text-shadow:0px 1px 0px rgba(0,0,0,0.1)
+  box-shadow:inset 0px -3px 0px rgba(0,0,0,0.1), 0px 3px 0px rgba(0,0,0,0.1)
+  padding:0px 15px 3px
+  border-radius:5px
+
+
+  &.green
+    background-color:#82C43A
+  &.red
+    background-color:#F5494C
+  &.blue
+    background-color:#659AE0
+
+  &:hover
+    background-image:linear-gradient(top, rgba(0,0,0,0.05), rgba(0,0,0,0.2))
+
+
+  &:active
+    position:relative
+    top:2px
+    box-shadow:inset 0px -1px 0px rgba(0,0,0,0.1), 0px 2px 0px rgba(0,0,0,0.1)
+
+img
+  border: 0
+
+#imageList
+  absolute: top 0 left 0
+  right: 0
+  bottom: 0
+  overflow: hidden
+
+.gallery-wrapper, .images-wrapper
+  background: url(/images/bg.png)
+  absolute: top 70px left 0
+  right: 0
+  bottom: 0
+  padding: 0
+  overflow-x: hidden
+  overflow-y: auto
+
+.images-wrapper
+  bottom: 160px
+
+.gallery
+  margin: 0
+  text-align: center
+  padding: 10px 10px 30px 10px
+  &.hover
+    li
+      opacity: .7
+  li
+    margin: 0
+    width: 176px
+    height: 225px
+    position: relative
+    overflow: hidden
+    padding: 7px 8px
+    transition: .3s all
+    margin: 5px
+    display:inline-block
+    background: rgba(0,0,0,.2) url(/images/mask.png)
+    &.current
+      background: rgba($blue,.8) url(/images/mask.png)
+    &:hover
+      opacity: 1
+      z-index: 9999
+      .labels
+        opacity: 1
+        transition: all .5s ease
+
+    span.imgmask
+      background: rgba(0,0,0,.3) url(/images/loader.gif) 50% 50% no-repeat
+      display: block
+      width: 160px
+      height: 210px
+      position: relative
+      overflow: hidden
+    img
+      absolute top 50% left 50%
+      display: block
+      height: 250px
+      margin: -125px 0 0 -125px
+  .portrait
+    img
+      height: auto
+      width: 250px
+
+  .labels
+    transition: all .5s ease
+    word-spacing: normal
+    absolute: top 0 left 0
+    opacity: 0
+    background: rgba(0,0,0,.2) url(/images/mask.png)
+    font-style: normal
+    width: 176px
+    height: 225px
+    color: darken($blue, 10%)
+    text-shadow: 1px 1px 0 #000
+    line-height: 1.4
+    font-size: 20px
+    border-radius: 2px
+    cursor: pointer
+    em
+      absolute: bottom 0 left 0
+      right: 0
+      padding: 10px
+      background: linear-gradient(top, rgba(0,0,0,.2), rgba(0,0,0,.7), rgba(0,0,0,.9))
+      border-top: none
+
+  .last
+    width: 90%
+    background:rgba(255,255,255,.5)
+    height:30px
+    cursor: pointer
+
+.subgallery
+  height: 160px !important
+  border-top: 5px solid rgba(0,0,0,.3)
+  white-space: nowrap
+  right: 0
+  absolute bottom 0 left 0
+  top: 0
+  background: rgba(0,0,0,.5)
+  padding: 0 10px
+  box-shadow: 0 0 20px 5px #000 inset
+  z-index: 500
+
+  li
+    display: inline-block
+    transform: scale(.5)
+    position: relative
+    margin: -50px -10px -50px -40px
+    em
+      font-size: 30px
+
+.scroller
+  border-top: 1px solid #555
+  overflow-x: auto
+  overflow-y: hidden
+  top: 0
+  left: 0
+  absolute: bottom 0 right 0
+  padding: 10px 0 10px 20px
+
+footer
+  text-align: center
+  absolute: top 26px right 10px
+  z-index: 200
+  display: none
+
+.loader
+  fixed top 0 left 0
+  bottom 0
+  right 0
+  box-shadow 0 0 200px 20px #000 inset
+  z-index 9999
+  text-align center
+  background: rgba(0,0,0,.3) url(/images/loader.gif) 50% 50% no-repeat
+
