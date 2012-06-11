@@ -9,6 +9,7 @@
   },
   "dependencies": {
     "socketstream": "latest",
+    "express": "latest",
     "ss-coffee": "~0.1.1",
     "ss-jade": "~0.1.1",
     "ss-stylus": "~0.1.3",
