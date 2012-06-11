@@ -8,8 +8,8 @@
     "node": ">= 0.6.0"
   },
   "dependencies": {
-    "socketstream": "latest",
-    "express": "latest",
+    "socketstream": "~0.3.0RC2",
+    "express": "~2.5.9",
     "ss-coffee": "~0.1.1",
     "ss-jade": "~0.1.1",
     "ss-stylus": "~0.1.3",

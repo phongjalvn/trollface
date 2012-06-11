@@ -24,6 +24,7 @@ class GalleryMain extends Spine.Controller
     Spine.bind 'gallery.show', =>
       @formHolder.slideUp()
       @imgHolder.fadeIn()
+      @footer.hide()
 
     Spine.bind 'gallery.form', (imgurl)=>
       @imgVal.val(imgurl)
@@ -51,6 +52,7 @@ class GalleryMain extends Spine.Controller
 
   back: =>
     @imgHolder.show()
+    @footer.hide()
     @imgHolder.scrollTo('.current')
     @formHolder.slideUp()
 
