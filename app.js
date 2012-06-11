@@ -37,5 +37,6 @@ var app = express.createServer(
 ,   express.router(routes)
 )
 
-var server = app.listen(3000);
+var port = process.env.PORT || 3000;
+var server = app.listen(port);
 ss.start(server);
