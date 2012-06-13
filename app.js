@@ -22,9 +22,9 @@ ss.client.templateEngine.use(require('ss-hogan'));
 // ss.client.templateEngine.use(require('ss-clientjade'));
 
 // Minimize and pack assets if you type: SS_ENV=production node app.js
-if (ss.env == 'production'){
+// if (ss.env == 'production'){
   ss.client.packAssets();
-}
+// }
 // ss.ws.transport.use(require('ss-sockjs'));
 
 function routes(app)
