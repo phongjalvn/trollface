@@ -32,6 +32,9 @@ function routes(app)
     app.get('/', function (req, res) {
         res.serve('main')}
     )
+    app.post('/', function (req, res) {
+        res.serve('main')}
+    )
 }
 
 var app = express.createServer(
