@@ -39,23 +39,16 @@ class Images extends Spine.Controller
 
   render: (items = []) =>
     for item in items
-      oriwidth = item.width
-      item.width = @gallery.width() / 5 - 13
       @gallery.append ss.tmpl['gallery-image'].render(item)
 
     @gallery.append '<li class="last">Load more...</li>'
 
     @lastrow = @gallery.find('li.last')
-    @lastrow.waypoint((e, dir)=>
-      console.log 'asd'
-      @loadgallery()
-      @lastrow.remove()
-    , {triggerOnce: true, context: '.images-wrapper', offset: '100%'}
-    )
-    .click (e)=>
-      console.log 'asd'
-      @loadgallery()
-      @lastrow.remove()
+    # @lastrow.waypoint((e, dir)=>
+    #   @loadgallery()
+    #   @lastrow.remove()
+    # , {triggerOnce: true, context: '.images-wrapper', offset: '100%'}
+    # )
 
   loadgallery: =>
     @loader.fadeIn()

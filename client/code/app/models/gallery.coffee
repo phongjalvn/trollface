@@ -1,15 +1,27 @@
 Spine = require('spine')
 
 class Gallery extends Spine.Model
-  @configure 'Gallery', 'name', 'tag', 'thumb', 'width', 'height'
+  @configure 'Gallery', 'ext', 'name', 'image'
 
   @extend Spine.Model.Local
 
-  @endpoint: '/galleries.php'
+  @endpoint: 'http://localhost/direx/index.php'
 
   @fetch ->
     $.getJSON @endpoint, (res) =>
-      @refresh(res, clear: true)
+      resp = []
+      for name, index in res
+        resp[index] = {}
+        ext = name.substring name.length - 4
+        name = name.replace ext, ''
+        lastFolderSlash = name.lastIndexOf '/'
+        dirname = name.substring lastFolderSlash + 1
+
+        resp[index].ext = ext
+        resp[index].name = dirname
+        resp[index].image = name
+
+      @refresh(resp, clear: true)
       @saveLocal()
   @default: -> new @(name: 'Lol cats', tag: 'lolcats')
 

@@ -1,6 +1,6 @@
 li
-  a(href='http://i.imgur.com/{{hash}}{{ext}}')
+  a(href='http://localhost/direx/{{image}}{{ext}}')
     span.imgmask
-      img(src='http://i.imgur.com/{{hash}}b{{ext}}', alt='{{title}}', width='{{width}}')
+      img(src='http://localhost/direx/timthumb.php?h=200&w=180&src={{image}}{{ext}}', alt='{{name}}')
     span.labels
-      em {{title}}
+      em {{name}}

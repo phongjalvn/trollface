@@ -25,7 +25,7 @@ ss.client.templateEngine.use(require('ss-hogan'));
 if (ss.env == 'production'){
   ss.client.packAssets();
 }
-ss.ws.transport.use(require('ss-sockjs'));
+// ss.ws.transport.use(require('ss-sockjs'));
 
 function routes(app)
 {
