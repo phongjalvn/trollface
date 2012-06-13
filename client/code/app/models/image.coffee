@@ -5,7 +5,7 @@ class Image extends Spine.Model
 
   @extend Spine.Model.Local
 
-  @endpoint: 'http://localhost/direx/index.php?callback=?&dir='
+  @endpoint: 'http://phongjalvn.kodingen.com/direx/index.php?callback=?&dir='
 
   @fetch ->
     args = [].splice.call(arguments,0).join('/')

@@ -5,7 +5,7 @@ class Gallery extends Spine.Model
 
   @extend Spine.Model.Local
 
-  @endpoint: 'http://localhost/direx/index.php'
+  @endpoint: 'http://phongjalvn.kodingen.com/direx/index.php'
 
   @fetch ->
     $.getJSON @endpoint, (res) =>
