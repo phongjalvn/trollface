@@ -17,4 +17,3 @@ jQuery ->
   # Load app
   $ ->
     new App({el: $("body")})
-    $("img").lazyload()
