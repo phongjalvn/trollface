@@ -4,6 +4,15 @@ everyauth = require("everyauth")
 request = require("request")
 ss = require("socketstream")
 
+ss.client.define "main",
+  view  : "app.jade"
+  css   : [ "libs", "app.styl" ]
+  code  : [
+    "libs"
+    "app"
+    "system"
+  ]
+  tmpl  : "*"
 
 routes = (app) ->
   app.get "/", (req, res) ->
@@ -29,27 +38,18 @@ routes = (app) ->
   app.post "/", (req, res) ->
     res.serve "main"
 
-ss.client.define "main",
-  view  : "app.jade"
-  css   : [ "libs", "app.styl" ]
-  code  : [
-    "libs"
-    "app"
-    "system"
-  ]
-  tmpl  : "*"
 
 ss.client.formatters.add require("ss-coffee")
 ss.client.formatters.add require("ss-jade")
 ss.client.formatters.add require("ss-stylus")
 ss.client.templateEngine.use require("ss-hogan")
 
-ss.client.packAssets()  if ss.env is "production"
+# ss.client.packAssets() if ss.env is "production"
 
 everyauth.facebook.callbackPath("/auth/facebook/callback")
 .scope("email, user_likes, publish_stream, publish_actions")
-.appId(process.env.FACEBOOK_APP_ID)
-.appSecret(process.env.FACEBOOK_APP_SECR)
+.appId('242635384971')
+.appSecret('2236411e218eadfe32f59c621125a560')
 .findOrCreateUser((session, accessToken, accessTokenSecret, fbUserMetadata) ->
   userName = fbUserMetadata.username
   session.userId = userName
@@ -59,12 +59,14 @@ everyauth.facebook.callbackPath("/auth/facebook/callback")
 
 app = express.createServer(
   ss.http.middleware,
-  express.bodyParser(),
-  express.cookieParser(),
-  express.session(secret: "ILoveP2"),
+  ss.http.connect.bodyParser(),
+  # express.cookieParser(),
+  # express.session(secret: "ILoveP2"),
   everyauth.middleware(),
   express.router(routes)
 )
+# ss.publish.transport.use('redis', {host: 'tetra.redistogo.com', port: 9461, user:'nodejitsu', pass: 'cd55e4fc7ee4a4b93386ec5d89ec8346', db: 1})
+# ss.session.store.use('redis', {host: 'tetra.redistogo.com', port: 9461, user:'nodejitsu', pass: 'cd55e4fc7ee4a4b93386ec5d89ec8346', db: 1})
 port = process.env.PORT or 3000
 server = app.listen(port)
 ss.start server
