@@ -1,8 +1,8 @@
-Spine = require('spine')
+P2 = require('p2')
 Gallery = require('/models/gallery')
 Image = require('/models/image')
 
-class Galleries extends Spine.Controller
+class Galleries extends P2.Controller
   className: 'gallery-wrapper'
 
   elements:
@@ -51,7 +51,7 @@ class Galleries extends Spine.Controller
     ele = $(e.currentTarget)
     @gallery.find('.current').removeClass('current')
     ele.addClass('current')
-    Spine.trigger 'gallery.show', ele.attr('rel')
+    P2.trigger 'gallery.show', ele.attr('rel')
     if !@isShow?
       @isShow = true
       @el.transition

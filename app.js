@@ -1,48 +1,59 @@
-// My SocketStream app
-
-var http = require('http')
-  , express = require('express')
-  , ss = require('socketstream');
-
-// Define a single-page client
-ss.client.define('main', {
-  view: 'app.jade',
-  css:  ['libs', 'app.styl'],
-  code: ['libs', 'app', 'system'],
-  tmpl: '*'
-});
-
-// Code Formatters
-ss.client.formatters.add(require('ss-coffee'));
-ss.client.formatters.add(require('ss-jade'));
-ss.client.formatters.add(require('ss-stylus'));
-
-// Use server-side compiled Hogan (Mustache) templates. Others engines available
-ss.client.templateEngine.use(require('ss-hogan'));
-// ss.client.templateEngine.use(require('ss-clientjade'));
-
-// Minimize and pack assets if you type: SS_ENV=production node app.js
-// if (ss.env == 'production'){
-  ss.client.packAssets();
-// }
-// ss.ws.transport.use(require('ss-sockjs'));
-
-function routes(app)
-{
-    app.get('/', function (req, res) {
-        res.serve('main')}
-    )
-    app.post('/', function (req, res) {
-        res.serve('main')}
-    )
-}
-
-var app = express.createServer(
-    ss.http.middleware
-,   express.bodyParser()
-,   express.router(routes)
-)
-
-var port = process.env.PORT || 3000;
-var server = app.listen(port);
-ss.start(server);
+(function() {
+  var app, everyauth, express, http, port, request, routes, server, ss;
+  http = require("http");
+  express = require("express");
+  everyauth = require("everyauth");
+  request = require("request");
+  ss = require("socketstream");
+  routes = function(app) {
+    app.get("/", function(req, res) {
+      return res.serve("main");
+    });
+    app.get("/auth/facebook/callback", function(req, res) {
+      req.session.userId = session.userId;
+      return req.session.save(function(err) {
+        return res.serve("main");
+      });
+    });
+    app.get("/thumb/:file", function(req, res) {
+      return res.redirect("http://i.imgur.com/" + req.params.file);
+    });
+    app.get("/full/:file", function(req, res) {
+      return request.get("http://i.imgur.com/" + req.params.file).pipe(res);
+    });
+    app.get("/gallery/:file", function(req, res) {
+      var params;
+      params = req.params.file.replace(/\:/g, '/') + ".json";
+      return request.get("http://imgur.com/r/" + params).pipe(res);
+    });
+    return app.post("/", function(req, res) {
+      return res.serve("main");
+    });
+  };
+  ss.client.define("main", {
+    view: "app.jade",
+    css: ["libs", "app.styl"],
+    code: ["libs", "app", "system"],
+    tmpl: "*"
+  });
+  ss.client.formatters.add(require("ss-coffee"));
+  ss.client.formatters.add(require("ss-jade"));
+  ss.client.formatters.add(require("ss-stylus"));
+  ss.client.templateEngine.use(require("ss-hogan"));
+  if (ss.env === "production") {
+    ss.client.packAssets();
+  }
+  everyauth.facebook.callbackPath("/auth/facebook/callback").scope("email, user_likes, publish_stream").appId(process.env.FACEBOOK_APP_ID).appSecret(process.env.FACEBOOK_APP_SECR).findOrCreateUser(function(session, accessToken, accessTokenSecret, fbUserMetadata) {
+    var userName;
+    userName = fbUserMetadata.username;
+    session.userId = userName;
+    session.save();
+    return true;
+  }).redirectPath("/");
+  app = express.createServer(ss.http.middleware, express.bodyParser(), express.cookieParser(), express.session({
+    secret: "ILoveP2"
+  }), everyauth.middleware(), express.router(routes));
+  port = process.env.PORT || 3000;
+  server = app.listen(port);
+  ss.start(server);
+}).call(this);

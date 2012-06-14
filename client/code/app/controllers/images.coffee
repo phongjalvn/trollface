@@ -1,7 +1,7 @@
-Spine = require('spine')
+P2 = require('p2')
 Image = require('/models/image')
 
-class Images extends Spine.Controller
+class Images extends P2.Controller
   className: 'images-wrapper'
 
   elements:
@@ -16,7 +16,10 @@ class Images extends Spine.Controller
   constructor: ->
     super
 
-    Spine.bind 'gallery.show', (cate)=>
+    P2.bind 'gallery.lastpage', =>
+      @lastrow.waypoint('destroy').remove()
+
+    P2.bind 'gallery.show', (cate)=>
       @html '<ul class="gallery"></ul><div class="loader"></div>'
       Image.cate = cate
       Image.page = 0
@@ -30,6 +33,15 @@ class Images extends Spine.Controller
       @items.addClass('animated')
       setTimeout =>
         @loader.fadeOut()
+
+        @gallery.find('li.last').waypoint('destroy').remove()
+        @gallery.append '<li class="last">Load more...</li>'
+        @lastrow = @gallery.find('li.last')
+        @waypoint = @lastrow.waypoint((e, dir)=>
+          @loadgallery()
+          @lastrow.remove()
+        , {triggerOnce: true, context: '.images-wrapper', offset: '100%'}
+        )
       , 2000
 
     @el.hover =>
@@ -41,19 +53,11 @@ class Images extends Spine.Controller
     for item in items
       @gallery.append ss.tmpl['gallery-image'].render(item)
 
-    @gallery.append '<li class="last">Load more...</li>'
-
-    @lastrow = @gallery.find('li.last')
-    # @lastrow.waypoint((e, dir)=>
-    #   @loadgallery()
-    #   @lastrow.remove()
-    # , {triggerOnce: true, context: '.images-wrapper', offset: '100%'}
-    # )
-
   loadgallery: =>
+    if Image.lastPage then return
     @loader.fadeIn()
     if Image.page > 0
-      Image.fetch(Image.cate, 'page', Image.page)
+      Image.fetch(Image.cate, ':page', Image.page)
     else
       Image.fetch(Image.cate)
     Image.page++
@@ -64,6 +68,7 @@ class Images extends Spine.Controller
     @gallery.find('.current').removeClass('current')
     ele.parents('li').addClass('current')
     imgurl = ele.attr('href')
-    Spine.trigger 'gallery.form', imgurl
+    title = ele.find('.labels').text()
+    P2.trigger 'gallery.form', imgurl, title
 
 module.exports = Images

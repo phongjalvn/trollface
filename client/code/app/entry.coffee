@@ -1,16 +1,12 @@
 window.ss = require('socketstream')
 
-# require('/loadercontrol')
+P2 = require('p2')
+Gallery = require('/models/gallery')
+Image = require('/models/image')
+Galleries = require('/controllers/galleries')
+Images = require('/controllers/images')
 
-require('spine')
-require('ajax')
-require('local')
-require('manager')
-require('relation')
-require('route')
-require('list')
 App = require('/index')
-
 # Wait for the DOM to finish loading
 jQuery ->
 

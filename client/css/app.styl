@@ -9,6 +9,7 @@ global-reset()
 
 *
   box-sizing: border-box
+  backface-visibility: hidden
 // ====================================
 a
   text-decoration: none
@@ -38,17 +39,6 @@ body
   background: lighten($blue, 30%) url('/images/blueprint.png')
   font-family: 'Noticia Text', serif
   font-style:italic
-
-
-.main
-  absolute: top 30px left 30px
-  bottom: 30px
-  right: 30px
-  padding: 80px 20px 20px
-  border-radius: 5px
-  border: 5px solid #fff
-  box-shadow: 3px 3px 10px rgba(0,0,0,.3)
-  background-color: #333
 
 header
   padding: 0
@@ -89,11 +79,27 @@ header
     color:#fff
     text-shadow:1px 1px 0 rgba(0,0,0,.2)
 
+
+.main
+  absolute: top 30px left 30px
+  bottom: 30px
+  right: 30px
+  padding: 80px 20px 20px
+  border-radius: 5px
+  border: 5px solid #fff
+  box-shadow: 3px 3px 10px rgba(0,0,0,.3)
+  background-color: #333
+
+  h2.message
+    @extend header h1
+  .message
+    display: none
+
 aside
-  background: lighten($blue, 50%)
+  padding: 5px
+  background: url(/images/bg.png)
   box-shadow: inset 1px 1px 1px rgba(0,0,0,.3)
   border-radius: 5px
-  padding: 5px
   display: none
   position: relative
   z-index: 50
@@ -166,6 +172,7 @@ form
   box-shadow:inset 0px -3px 0px rgba(0,0,0,0.1), 0px 3px 0px rgba(0,0,0,0.1)
   padding:0px 15px 3px
   border-radius:5px
+  background-color:#82C43A
 
 
   &.green
@@ -213,60 +220,64 @@ img
     li
       opacity: .7
   li
-    margin: 0
-    width: 176px
-    height: 225px
-    position: relative
-    overflow: hidden
-    padding: 7px 8px
-    transition: .3s all
-    margin: 5px
     display:inline-block
-    background: rgba(0,0,0,.2) url(/images/mask.png)
-    &.current
-      background: rgba($blue,.8) url(/images/mask.png)
+    width: 200px
+    margin: 2%
+    position: relative
+    z-index: 10
+    transition: 0.3s all ease-out;
     &:hover
       opacity: 1
-      z-index: 9999
+      z-index: 400
+      transform: scale(1.2)
+      transition: 0.3s all ease-out;
+      &::before, &::after
+        transform: rotate(0deg)
+        transition: 0.3s all ease-out;
       .labels
-        opacity: 1
+        max-height: 30%
+        padding: 10px 0
         transition: all .5s ease
+    &::before, &::after
+      content: "";
+      border-radius: 3px;
+      absolute: bottom 0 left 10px
+      right: 10px
+      border: 10px solid #fff;
+      box-sizing: border-box;
+      box-shadow: 0 1px 4px rgba(0, 0, 0, 0.4);
+      transition: 0.3s all ease-out;
+      transform-origin: right 50%
+    &::before
+      top: 4px;
+      z-index: -10;
+      transform: rotate(4deg);
+    &::after
+      top: 8px;
+      z-index: -20;
+      transform: rotate(8deg);
 
-    span.imgmask
-      background: rgba(0,0,0,.3) url(/images/loader.gif) 50% 50% no-repeat
-      display: block
-      width: 160px
-      height: 210px
-      position: relative
-      overflow: hidden
     img
-      absolute top 50% left 50%
-      display: block
-      height: 230px
-      width: 200px
-      margin: -115px 0 0 -100px
+      max-width: 100%;
+      height: auto;
+      vertical-align: bottom;
+      border: 10px solid #fff;
+      border-radius: 3px
+      box-sizing: border-box;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
 
   .labels
-    transition: all .5s ease
-    word-spacing: normal
-    absolute: top 0 left 0
-    opacity: 0
-    background: rgba(0,0,0,.2) url(/images/mask.png)
-    font-style: normal
-    width: 176px
-    height: 225px
-    color: darken($blue, 10%)
-    text-shadow: 1px 1px 0 #000
-    line-height: 1.4
-    font-size: 20px
-    border-radius: 2px
-    cursor: pointer
+    display: block
+    background: linear-gradient(top, #fff, #eee)
+    border-radius: 0 0 3px 3px;
+    position: absolute
+    bottom: 0
+    left: 20px
+    right: 20px
+    max-height: 0
+    overflow: hidden
     em
-      absolute: bottom 0 left 0
-      right: 0
-      padding: 10px
-      background: linear-gradient(top, rgba(0,0,0,.2), rgba(0,0,0,.7), rgba(0,0,0,.9))
-      border-top: none
+      display: block
 
   .last
     width: 90%
@@ -293,6 +304,8 @@ img
     margin: -50px -10px -50px -40px
     em
       font-size: 30px
+    &:hover
+      transform: scale(.6)
 
 .scroller
   border-top: 1px solid #555
@@ -303,18 +316,46 @@ img
   absolute: bottom 0 right 0
   padding: 10px 0 10px 20px
 
-footer
+.main footer
   text-align: center
   absolute: top 26px right 10px
   z-index: 200
-  display: none
+  white-space: nowrap
+
+  #fb-login .button
+    display:inline-block
+    background-image:url('http://cdn1.iconfinder.com/data/icons/aquaticus/24%20X%2024/facebook.png')
+    background-position: 5px 5px;
+    padding-left: 35px;
+    background-repeat: no-repeat;
+
+  h2
+    @extend header h1
+    margin-top: -2px
+    background: none
+    display: inline-block
+    border: none
+    padding: 0 10px 0 0
+
+  .submit
+    float:right
+    display: none
 
 .loader
-  fixed top 0 left 0
-  bottom 0
-  right 0
-  box-shadow 0 0 200px 20px #000 inset
-  z-index 9999
-  text-align center
+  fixed: top 0 left 0
+  bottom: 0
+  right: 0
+  box-shadow: 0 0 200px 20px #000 inset
+  z-index: 9999
+  text-align: center
   background: rgba(0,0,0,.3) url(/images/loader.gif) 50% 50% no-repeat
 
+#feather
+  margin:0 auto
+  #avpw_save_button a
+    @extend .button
+    font-weight: 700
+  #avpw_header
+    display: none
+#posttowall
+  display: none

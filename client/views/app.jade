@@ -1,8 +1,11 @@
 !!! 5
 html(lang="en")
   head
-    != SocketStream
     meta(charset="utf-8")
     title Welcome
-    block script
+    script(src='http://connect.facebook.net/en_US/all.js')
+    script(src='http://feather.aviary.com/js/feather.js')
+
+    != SocketStream
   body
+    #fb-root

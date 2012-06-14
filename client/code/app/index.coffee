@@ -1,7 +1,7 @@
-Spine = require('spine')
+P2 = require('p2')
 GalleryMain = require('/controllers/gallerymain')
 
-class App extends Spine.Controller
+class App extends P2.Controller
   constructor: ->
     super
 

@@ -4,3 +4,8 @@
 
 /client/*
 ./README.md
+./Makefile
+./app.js
+./Procfile
+/.git/*
+./.gitignore

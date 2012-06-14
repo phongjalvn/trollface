@@ -1,0 +1,8 @@
+[
+  {
+    "gallery-endpoint": "/galleries.json",
+    "image-endpoint": "/gallery/",
+    "images": "/thumb/",
+    "posturl": "/fb/"
+  }
+]
