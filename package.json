@@ -1,11 +1,11 @@
 {
   "name": "testapp",
   "description": "An awesome real time application",
-  "version": "0.0.1-26",
+  "version": "0.0.2-37",
   "author": "Me <me@mydomain.com>",
   "private": true,
   "engines": {
-    "node": ">= 0.6.18"
+    "node": ">= 0.6.14"
   },
   "dependencies": {
     "socketstream": "~0.3.0RC2",
@@ -14,10 +14,10 @@
     "ss-jade": "~0.1.1",
     "ss-stylus": "~0.1.3",
     "ss-hogan": "~0.1.3",
-    "ss-clientjade": "0.0.2",
     "request": "~2.9.202",
-    "everyauth": "~0.2.32",
-    "superagent": "~0.4.2"
+    "ss-sockjs": "~0.1.0",
+    "fb": "0.0.6",
+    "ss-console": "~0.1.2"
   },
   "subdomain": "jalcuibap",
   "scripts": {

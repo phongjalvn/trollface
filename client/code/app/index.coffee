@@ -6,6 +6,15 @@ class App extends P2.Controller
     super
 
     @gallery = new GalleryMain
-    @html @gallery
+
+    templates = ['aside', 'header']
+    for tmpl in templates
+      if typeof tmpl is 'string'
+        html = ss.tmpl['gallery-'+tmpl].render()
+      else
+        html = tmpl
+      @gallery.prepend html
+
+    @append @gallery
 
 module.exports = App

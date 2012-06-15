@@ -32,8 +32,7 @@ class Images extends P2.Controller
       @render(arguments...)
       @items.addClass('animated')
       setTimeout =>
-        @loader.fadeOut()
-
+        @el.removeClass('loading')
         @gallery.find('li.last').waypoint('destroy').remove()
         @gallery.append '<li class="last">Load more...</li>'
         @lastrow = @gallery.find('li.last')
@@ -55,7 +54,6 @@ class Images extends P2.Controller
 
   loadgallery: =>
     if Image.lastPage then return
-    @loader.fadeIn()
     if Image.page > 0
       Image.fetch(Image.cate, ':page', Image.page)
     else
@@ -65,6 +63,7 @@ class Images extends P2.Controller
   showForm: (e)=>
     e.preventDefault()
     ele = $(e.currentTarget)
+    @lastrow.waypoint('destroy')
     @gallery.find('.current').removeClass('current')
     ele.parents('li').addClass('current')
     imgurl = ele.attr('href')

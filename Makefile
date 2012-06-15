@@ -9,6 +9,6 @@ build:
 
 deploy:
 	@coffee -o ./ app.coffee
-	@jitsu deploy
+	@jitsu deploy --noanalyze
 
 .PHONY: watch

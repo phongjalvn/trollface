@@ -3,9 +3,41 @@ html(lang="en")
   head
     meta(charset="utf-8")
     title Welcome
-    script(src='http://connect.facebook.net/en_US/all.js')
     script(src='http://feather.aviary.com/js/feather.js')
-
     != SocketStream
+    meta(property='og:title', content='Test app')
+    meta(property='og:type', content='Fun')
+    meta(property='og:url', content='')
+    meta(property='og:image', content='')
+    meta(property='og:site_name', content='')
+    meta(property='og:description', content='')
+    meta(property='fb:app_id', content='242635384971')
+    //if IE
+      script(type='text/javascript')
+        var tags = ['header', 'section'];
+        while(tags.length)
+        document.createElement(tags.pop());
   body
+    #main
     #fb-root
+    script
+      window.fbAsyncInit = function() {
+      FB.init({
+        appId      : '242635384971', // App ID
+        channelUrl : '//jalcuibap.nodejitsu.com/channel.html', // Channel File
+        status     : true, // check login status
+        cookie     : true, // enable cookies to allow the server to access the session
+        xfbml      : true  // parse XFBML
+      });
+
+      // Additional initialization code here
+    };
+
+    // Load the SDK Asynchronously
+    (function(d){
+       var js, id = 'facebook-jssdk', ref = d.getElementsByTagName('script')[0];
+       if (d.getElementById(id)) {return;}
+       js = d.createElement('script'); js.id = id; js.async = true;
+       js.src = "//connect.facebook.net/en_US/all.js";
+       ref.parentNode.insertBefore(js, ref);
+     }(document));

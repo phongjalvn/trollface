@@ -27,19 +27,21 @@ class Galleries extends P2.Controller
       @render(arguments...)
       @items.addClass('animated')
       setTimeout =>
-        @loader.fadeOut()
+        @el.removeClass('loading')
       , 2000
 
-    Gallery.fetch()
     @gallery.hover =>
       @gallery.addClass('hover')
     , =>
       @gallery.removeClass('hover')
 
+    Gallery.fetch()
+
   render: (items = []) =>
-    @html '<ul class="gallery"></ul><div class="loader"></div>'
+    @html '<ul class="gallery"></ul>'
     for item in items
       @gallery.append ss.tmpl['gallery-item'].render(item)
+    # @append ss.tmpl['gallery-loader'].render()
 
   mouseover: (e)->
     ele = $(e.currentTarget)

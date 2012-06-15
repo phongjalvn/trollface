@@ -12,6 +12,7 @@ class GalleryMain extends P2.Controller
     '.images-wrapper': 'imgHolder'
     'footer .submit': 'footer'
     '.gallery-wrapper': 'galleryHolder'
+    '.message': 'message'
 
   events:
     'click .green': 'formHandle'
@@ -21,35 +22,41 @@ class GalleryMain extends P2.Controller
   constructor: ->
     super
 
+    @galleries = new Galleries
+    @images = new Images
+
+    ss.event.on 'postSuccess', (res)=>
+      mess = ss.tmpl['gallery-posted'].render(message: message.id)
+      @imgHolder.prepend mess
+      $('.message').last().slideDown().delay(5000).fadeOut 500, ->
+        $('.message').remove()
+
+    ss.event.on 'auth', (userId)=>
+      @userId = userId
+      @message.fadeOut()
+      @append @images
+      @append @galleries
+      $('footer').html ss.tmpl['gallery-footerloggedin'].render(userId: userId)
+
     P2.bind 'gallery.show', =>
       @formHolder.slideUp()
       @imgHolder.fadeIn()
       @footer.hide()
 
-
     P2.bind 'gallery.form', (imgurl, title)=>
-      if @login then ss.rpc 'user.isLiked', (message)=>
-          if message isnt ''
-            mess = ss.tmpl['gallery-message'].render(message: message)
-            @imgHolder.prepend mess
-            $('.message').last().slideDown().delay(1000).fadeOut 500, ->
-              $('.message').remove()
-          else
-            @imgUrl = imgurl
-            @imgHolder.fadeOut()
-            @galleryHolder.fadeOut()
-            @formHolder.find('img').remove()
-            @formHolder.append("<img src='#{imgurl}' id='featherimage'/>").slideDown 500, =>
-              @launchEditor('featherimage', @imgUrl)
-              @footer.fadeIn()
-              @formHolder.css('overflow-y', 'auto')
-              @formHolder.find('.message').text(title)
-
-    @galleries = new Galleries
-    @images = new Images
+      @imgUrl = imgurl
+      @imgHolder.fadeOut()
+      @galleryHolder.fadeOut()
+      @formHolder.find('img').remove()
+      @formHolder.append("<img src='#{imgurl}' id='featherimage'/>").slideDown 500, =>
+        @launchEditor('featherimage', @imgUrl)
+        @footer.fadeIn()
+        @formHolder.css('overflow-y', 'auto')
+        @formHolder.find('.message').text(title)
 
     @render()
 
+  # Check form don gian
   # formCheck: (e)=>
   #   ele = $(e.currentTarget)
   #   if ele.val() == ''
@@ -57,6 +64,7 @@ class GalleryMain extends P2.Controller
   #   else
   #     ele.parents('li').addClass('success').removeClass('error')
 
+  # Goi editor ra, an hinh goc, xoa lung tung vai ba thu
   launchEditor: (id, src)=>
     featherEditor.launch
         image: id,
@@ -64,6 +72,7 @@ class GalleryMain extends P2.Controller
     $("##{id}").hide()
     @checkIma()
 
+  # Don't touch this
   checkIma: (id, src)=>
     setTimeout =>
       ima = $('#avpw_aviary_about')
@@ -73,6 +82,8 @@ class GalleryMain extends P2.Controller
         @checkIma
     , 500
 
+  # This one should named imageHandle instead, but i'm a bit lazy
+  # You'll may want to check the libs/tfeather.coffee, there are some hidden sweetness
   formHandle: (e)=>
     e.preventDefault()
     @imgHolder.fadeIn()
@@ -81,43 +92,30 @@ class GalleryMain extends P2.Controller
     @footer.fadeOut()
     $('#posttowall').hide()
     imgUrl = $('#featherimage').attr('src')
-    ss.rpc('user.makePost', imgUrl, (message)=>
-      mess = ss.tmpl['gallery-posted'].render(message: message.id)
-      @imgHolder.prepend mess
-      $('.message').last().slideDown().delay(3000).fadeOut 500, ->
-        $('.message').remove()
-      @back
-    )
-    # @galleryHolder.fadeOut()
-    # launchEditor('featherimage', @imgUrl)
-    # @form.submit() if @form.find('.success').length >= 3
+    # goi ve server de post hinh len wall, co the them params, nhung server chi co the
+    # post len facebook theo nhung field qui dinh, vd: name, url
+    # Khi post xong se goi tra ve event postSuccess
+    ss.rpc 'user.makePost', imgUrl, ()->
+      console.log 'Should show loader here'
 
+  # User click 'Chon hinh khac' button
   back: =>
     @imgHolder.show()
     @footer.hide()
     @imgHolder.scrollTo('.current')
     @formHolder.slideUp()
     @footer.fadeOut()
+    @imgHolder.find('.last').waypoint((e, dir)=>
+      @loadgallery()
+      @lastrow.remove()
+    , {triggerOnce: true, context: '.images-wrapper', offset: '100%'}
+    )
     $('#posttowall').hide()
     featherEditor.close()
 
+  # We only need login message and footer (which hold the fuckbook login bastard)
   render: ->
-    templates = ['header', 'aside']
-    for tmpl in templates
-      if typeof tmpl is 'string'
-        html = ss.tmpl['gallery-'+tmpl].render()
-      else
-        html = tmpl
-      @append html
-
-    ss.rpc 'user.getUser', (userId)=>
-      if userId?
-        @login = userId
-        @append @images
-        @append @galleries
-        @append ss.tmpl['gallery-footerloggedin'].render(userId: userId)
-      else
-        @append ss.tmpl['gallery-login'].render()
-        @append ss.tmpl['gallery-footer'].render()
+      @append ss.tmpl['gallery-login'].render()
+      @append ss.tmpl['gallery-footer'].render()
 
 module.exports = GalleryMain

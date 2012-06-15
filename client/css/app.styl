@@ -11,10 +11,6 @@ global-reset()
   box-sizing: border-box
   backface-visibility: hidden
 // ====================================
-a
-  text-decoration: none
-  img
-    border: 0
 
 $green= #82C43A
 $red= #F5494C
@@ -25,6 +21,12 @@ $dotColor= rgba($blue, .7)
 $dotColorHover= rgba($green, .7)
 $thumbsize= 75px
 
+a
+  text-decoration: none
+  color: $blue
+  img
+    border: 0
+
 animated($time=.5s, $mode=all, $easing=ease, $delay=.2s)
   transition: $time $mode $easing
   transition-delay: $delay
@@ -32,11 +34,13 @@ animated($time=.5s, $mode=all, $easing=ease, $delay=.2s)
 
 // Styles
 
+html
+  height: 100%
 body
-  max-width: 780px
+  min-height: 100%
   margin: 0 auto
   padding: 20px 10px
-  background: lighten($blue, 30%) url('/images/blueprint.png')
+  background: lighten($blue, 10%) url('/images/blueprint.png')
   font-family: 'Noticia Text', serif
   font-style:italic
 
@@ -92,9 +96,13 @@ header
 
   h2.message
     @extend header h1
+    >a
+      color: $red
   .message
     display: none
-
+    .loader
+      opacity: 0
+      top: 100%
 aside
   padding: 5px
   background: url(/images/bg.png)
@@ -211,6 +219,11 @@ img
 
 .images-wrapper
   bottom: 160px
+  .loader
+    transition: all .5s ease
+    opacity:0
+    top: 100%
+    background-color: rgba(0,0,0,.5)
 
 .gallery
   margin: 0
@@ -319,7 +332,7 @@ img
 .main footer
   text-align: center
   absolute: top 26px right 10px
-  z-index: 200
+  z-index: 400
   white-space: nowrap
 
   #fb-login .button
@@ -348,7 +361,12 @@ img
   box-shadow: 0 0 200px 20px #000 inset
   z-index: 9999
   text-align: center
-  background: rgba(0,0,0,.3) url(/images/loader.gif) 50% 50% no-repeat
+  background: rgba(0,0,0,.95) url(/images/loader.gif) 50% 50% no-repeat
+
+#main .loading .loader
+  opacity: 1
+  top: 0
+  transition: all .3s ease
 
 #feather
   margin:0 auto
