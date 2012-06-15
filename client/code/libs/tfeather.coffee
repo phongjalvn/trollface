@@ -15,22 +15,3 @@
 #
 #
 
-featherEditor = new Aviary.Feather(
-  apiKey: "b073f6881"
-  appendTo: "feather"
-  minimumStyling: true
-  # maxSize: 1000
-  theme: "black"
-  noCloseButton: true
-  language: "vi"
-  tools: "all"
-  openType: "inline"
-  onSave: (imageID, newURL) ->
-    featherEditor.close()
-    img = $("#"+imageID)
-    $.post("http://api.imgur.com/2/upload.json",{key: '6a29ef3026a6c6343b65646f222b2dd2', image: newURL, type: 'url'}, (res)->
-      img.attr('src', res.upload.links.original).load ->
-        img.fadeIn()
-        $('#posttowall, .submit').fadeIn()
-    )
-)

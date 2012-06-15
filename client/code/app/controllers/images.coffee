@@ -63,7 +63,7 @@ class Images extends P2.Controller
   showForm: (e)=>
     e.preventDefault()
     ele = $(e.currentTarget)
-    @lastrow.waypoint('destroy')
+    @gallery.find('li.last').waypoint('destroy').remove()
     @gallery.find('.current').removeClass('current')
     ele.parents('li').addClass('current')
     imgurl = ele.attr('href')

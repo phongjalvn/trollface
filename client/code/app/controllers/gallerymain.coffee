@@ -107,7 +107,6 @@ class GalleryMain extends P2.Controller
     @footer.fadeOut()
     @imgHolder.find('.last').waypoint((e, dir)=>
       @loadgallery()
-      @lastrow.remove()
     , {triggerOnce: true, context: '.images-wrapper', offset: '100%'}
     )
     $('#posttowall').hide()

@@ -56,15 +56,14 @@ ss.client.templateEngine.use require("ss-hogan")
 ss.client.packAssets() if ss.env is "production"
 
 ss.ws.transport.use(require('ss-sockjs'))
-ss.ws.transport.use(require('ss-sockjs'),{
-  client: {
-    debug: true
-  }, server: {
-    log: (severity, message)->
-      console.log('Custom logger >>>', severity, message);
-  }
-})
-
+# ss.ws.transport.use(require('ss-sockjs'),{
+#   client: {
+#     debug: true
+#   }, server: {
+#     log: (severity, message)->
+#       console.log('Custom logger >>>', severity, message);
+#   }
+# })
 
 app.stack = app.stack.concat(ss.http.middleware.stack)
 ss.publish.transport.use('redis', {host: 'tetra.redistogo.com', port: 9461, user:'nodejitsu', pass: 'cd55e4fc7ee4a4b93386ec5d89ec8346', db: 1})

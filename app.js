@@ -67,17 +67,6 @@
 
   ss.ws.transport.use(require('ss-sockjs'));
 
-  ss.ws.transport.use(require('ss-sockjs'), {
-    client: {
-      debug: true
-    },
-    server: {
-      log: function(severity, message) {
-        return console.log('Custom logger >>>', severity, message);
-      }
-    }
-  });
-
   app.stack = app.stack.concat(ss.http.middleware.stack);
 
   ss.publish.transport.use('redis', {

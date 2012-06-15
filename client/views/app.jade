@@ -3,41 +3,42 @@ html(lang="en")
   head
     meta(charset="utf-8")
     title Welcome
-    script(src='http://feather.aviary.com/js/feather.js')
-    != SocketStream
+
     meta(property='og:title', content='Test app')
     meta(property='og:type', content='Fun')
     meta(property='og:url', content='')
     meta(property='og:image', content='')
-    meta(property='og:site_name', content='')
-    meta(property='og:description', content='')
     meta(property='fb:app_id', content='242635384971')
+
     //if IE
       script(type='text/javascript')
         var tags = ['header', 'section'];
         while(tags.length)
         document.createElement(tags.pop());
+
+    != SocketStream
   body
     #main
     #fb-root
+    script(src='https://dme0ih8comzn4.cloudfront.net/js/feather.js')
     script
-      window.fbAsyncInit = function() {
-      FB.init({
-        appId      : '242635384971', // App ID
-        channelUrl : '//jalcuibap.nodejitsu.com/channel.html', // Channel File
-        status     : true, // check login status
-        cookie     : true, // enable cookies to allow the server to access the session
-        xfbml      : true  // parse XFBML
+      window.featherEditor = new Aviary.Feather({
+        apiKey: "b073f6881",
+        appendTo: "feather",
+        minimumStyling: true,
+        theme: "black",
+        noCloseButton: true,
+        language: "vi",
+        tools: "all",
+        openType: "inline",
+        onSave: function(imageID, newURL){
+          featherEditor.close();
+          img = $("#"+imageID);
+          $.post("http://api.imgur.com/2/upload.json",{key: '6a29ef3026a6c6343b65646f222b2dd2', image: newURL, type: 'url'}, function(res) {
+            img.attr('src', res.upload.links.original).load(function(){
+              img.fadeIn();
+              $('#posttowall, .submit').fadeIn();
+            });
+          });
+        };
       });
-
-      // Additional initialization code here
-    };
-
-    // Load the SDK Asynchronously
-    (function(d){
-       var js, id = 'facebook-jssdk', ref = d.getElementsByTagName('script')[0];
-       if (d.getElementById(id)) {return;}
-       js = d.createElement('script'); js.id = id; js.async = true;
-       js.src = "//connect.facebook.net/en_US/all.js";
-       ref.parentNode.insertBefore(js, ref);
-     }(document));
