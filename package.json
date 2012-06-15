@@ -1,7 +1,7 @@
 {
   "name": "testapp",
   "description": "An awesome real time application",
-  "version": "0.0.3-33",
+  "version": "0.0.3-34",
   "author": "Me <me@mydomain.com>",
   "private": true,
   "engines": {
