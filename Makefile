@@ -1,5 +1,5 @@
 watch:
-	@FACEBOOK_APP_ID='242635384971'
+	@FACEBOOK_APP_ID='252913768155075'
 	@FACEBOOK_APP_SECR='2236411e218eadfe32f59c621125a560'
 	@nodemon -x coffee app.coffee
 	# @nodemon node app.js

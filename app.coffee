@@ -43,6 +43,15 @@ app.get "/thumb/:file", (req, res) ->
 app.get "/full/:file", (req, res) ->
   request.get("http://i.imgur.com/" + req.params.file).pipe res
 
+# imgur
+# c552b7b8ecfcaa004fb792fe3ec07eeb04fdbda39
+# c51140b1a8cd1b446a08d627eda1daa4
+#
+app.get "/album/:file", (req, res) ->
+  params = req.params.file.replace(/\:/g, '/') + ".json"
+  # console.log "Proxy for gallery: " + params
+  request.get("http://imgur.com/r/" + params).pipe res
+
 app.get "/gallery/:file", (req, res) ->
   params = req.params.file.replace(/\:/g, '/') + ".json"
   # console.log "Proxy for gallery: " + params
