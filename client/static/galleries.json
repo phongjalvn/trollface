@@ -1,11 +1,5 @@
 [
-  {"name": "lolcats", "tag": "lolcats", "thumb": "PoEde.jpg"},
-  {"name": "catpictures", "tag": "catpictures", "thumb": "AEHhwb.jpg"},
-  {"name": "ragenovels", "tag": "ragenovels", "thumb": "D3ZKhb.jpg"},
-  {"name": "fffffffuuuuuuuuuuuu", "tag": "ragenovels", "thumb": "ELsvTb.jpg"},
-  {"name": "Demotivational", "tag": "Demotivational", "thumb": "NR0Vab.jpg"},
-  {"name": "ecards", "tag": "ecards", "thumb": "NR0Vab.jpg"},
-  {"name": "reactiongifs", "tag": "reactiongifs", "thumb": "dAPvlb.jpg"},
-  {"name": "ExpectationVsReality", "tag": "ExpectationVsReality", "thumb": "ddPAcb.jpg"},
-  {"name": "gifs", "tag": "gifs", "thumb": "c0Jvo.gif"}
+  {"name": "Album 1", "tag": "NlpMo", "thumb": "PoEde.jpg"},
+  {"name": "Album 2", "tag": "uURKf", "thumb": "PoEde.jpg"},
+  {"name": "Album 3", "tag": "gNiAl", "thumb": "PoEde.jpg"}
 ]

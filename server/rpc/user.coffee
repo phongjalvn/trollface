@@ -4,6 +4,7 @@ exports.actions = (req, res, ss) ->
   req.use('session')
 
   auth: (authdata)->
+    return unless authdata.accessToken
     req.session.fb = authdata
     FB.options({accessToken: authdata.accessToken})
     FB.api '/me', (response)->

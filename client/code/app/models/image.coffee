@@ -11,21 +11,14 @@ class Image extends P2.Model
     return unless tag? and !@lastPage
     pages = page?.join(':') or ''
     $.getJSON @endpoint + tag + pages, (res, status) =>
-      # resp = []
-      # for name, index in res
-      #   resp[index] = {}
-      #   ext = name.substring name.length - 4
-      #   name = name.replace ext, ''
-      #   lastFolderSlash = name.lastIndexOf '/'
-      #   dirname = name.substring lastFolderSlash + 1
-
-      #   resp[index].ext = ext
-      #   resp[index].name = dirname
-      #   resp[index].image = name
-
-      # @refresh(resp, clear: true)
-      if status is 'success' and res.gallery.length > 0
-        @refresh(res.gallery, clear: true)
+      if status is 'success' and res.album.images.length > 0
+        resp = []
+        for imagedata, index in res.album.images
+          image = imagedata.image
+          sep = image.type.lastIndexOf('/') + 1
+          image.ext = "."+image.type.substring(sep)
+          resp.push(image)
+        @refresh(resp, clear: true)
         @saveLocal()
       else
         @lastPage = true

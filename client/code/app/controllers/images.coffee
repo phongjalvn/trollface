@@ -16,9 +16,6 @@ class Images extends P2.Controller
   constructor: ->
     super
 
-    P2.bind 'gallery.lastpage', =>
-      @lastrow.waypoint('destroy').remove()
-
     P2.bind 'gallery.show', (cate)=>
       @html '<ul class="gallery"></ul><div class="loader"></div>'
       Image.cate = cate
@@ -26,21 +23,13 @@ class Images extends P2.Controller
       @loadgallery()
 
     Image.bind 'fetch', =>
-      @el.addClass('loading')
+      P2.trigger('loader.show')
 
     Image.bind 'refresh', =>
       @render(arguments...)
       @items.addClass('animated')
       setTimeout =>
-        @el.removeClass('loading')
-        @gallery.find('li.last').waypoint('destroy').remove()
-        @gallery.append '<li class="last">Load more...</li>'
-        @lastrow = @gallery.find('li.last')
-        @waypoint = @lastrow.waypoint((e, dir)=>
-          @loadgallery()
-          @lastrow.remove()
-        , {triggerOnce: true, context: '.images-wrapper', offset: '100%'}
-        )
+        P2.trigger('loader.hide')
       , 2000
 
     @el.hover =>
@@ -63,7 +52,6 @@ class Images extends P2.Controller
   showForm: (e)=>
     e.preventDefault()
     ele = $(e.currentTarget)
-    @gallery.find('li.last').waypoint('destroy').remove()
     @gallery.find('.current').removeClass('current')
     ele.parents('li').addClass('current')
     imgurl = ele.attr('href')

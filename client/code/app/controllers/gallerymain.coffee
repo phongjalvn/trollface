@@ -13,6 +13,7 @@ class GalleryMain extends P2.Controller
     'footer .submit': 'footer'
     '.gallery-wrapper': 'galleryHolder'
     '.message': 'message'
+    '.loader': 'loader'
 
   events:
     'click .green': 'formHandle'
@@ -26,6 +27,7 @@ class GalleryMain extends P2.Controller
     @images = new Images
 
     ss.event.on 'postSuccess', (res)=>
+      P2.trigger('loader.hide')
       mess = ss.tmpl['gallery-posted'].render(message: message.id)
       @imgHolder.prepend mess
       $('.message').last().slideDown().delay(5000).fadeOut 500, ->
@@ -36,7 +38,12 @@ class GalleryMain extends P2.Controller
       @message.fadeOut()
       @append @images
       @append @galleries
-      $('footer').html ss.tmpl['gallery-footerloggedin'].render(userId: userId)
+
+    P2.bind 'loader.show', =>
+      @loadder.fadeIn()
+
+    P2.bind 'loader.hide', =>
+      @loader.fadeOut()
 
     P2.bind 'gallery.show', =>
       @formHolder.slideUp()
@@ -45,6 +52,7 @@ class GalleryMain extends P2.Controller
 
     P2.bind 'gallery.form', (imgurl, title)=>
       @imgUrl = imgurl
+      $('footer .submit').show()
       @imgHolder.fadeOut()
       @galleryHolder.fadeOut()
       @formHolder.find('img').remove()
@@ -96,12 +104,13 @@ class GalleryMain extends P2.Controller
     # post len facebook theo nhung field qui dinh, vd: name, url
     # Khi post xong se goi tra ve event postSuccess
     ss.rpc 'user.makePost', imgUrl, ()->
-      console.log 'Should show loader here'
+      P2.trigger('loader.show')
 
   # User click 'Chon hinh khac' button
   back: =>
     @imgHolder.show()
-    @footer.hide()
+    @galleryHolder.fadeIn()
+    $('footer .submit').hide()
     @imgHolder.scrollTo('.current')
     @formHolder.slideUp()
     @footer.fadeOut()

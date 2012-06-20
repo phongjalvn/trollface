@@ -26,7 +26,6 @@ class App extends P2.Controller
         xfbml: true
 
       FB.Event.subscribe "auth.login", (response) ->
-        console.log response
         if response.status is 'connected'
           ss.rpc 'user.auth', response.authResponse, ()->
             $('.loader').transition

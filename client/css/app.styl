@@ -38,6 +38,7 @@ html
   height: 100%
 body
   height: 100%
+  min-height: 500px
   margin: 0 auto
   padding: 20px 10px
   background: lighten($blue, 10%) url('/images/blueprint.png')
@@ -103,7 +104,7 @@ header
   .message
     display: none
     .loader
-      opacity: 0
+      opacity: 1
       top: 100%
 aside
   padding: 5px
@@ -379,3 +380,8 @@ img
     display: none
 #posttowall
   display: none
+
+@media only screen and (min-width : 768px) and (max-width : 1024px)
+  #feather
+    canvas
+      max-width:300px

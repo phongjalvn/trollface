@@ -18,7 +18,7 @@ FB.setAccessToken('access_token')
 
 app = express.createServer(
   ss.http.middleware,
-  # express.logger(),
+  express.logger(),
   express.bodyParser(),
   express.cookieParser(),
   # express.router(routes)
@@ -55,7 +55,7 @@ app.get "/album/:file", (req, res) ->
 app.get "/gallery/:file", (req, res) ->
   params = req.params.file.replace(/\:/g, '/') + ".json"
   # console.log "Proxy for gallery: " + params
-  request.get("http://imgur.com/r/" + params).pipe res
+  request.get("http://api.imgur.com/2/album/#{params}").pipe res
 
 ss.client.formatters.add require("ss-coffee")
 ss.client.formatters.add require("ss-jade")
@@ -64,7 +64,7 @@ ss.client.templateEngine.use require("ss-hogan")
 
 ss.client.packAssets() if ss.env is "production"
 
-ss.ws.transport.use(require('ss-sockjs'))
+# ss.ws.transport.use(require('ss-sockjs'))
 # ss.ws.transport.use(require('ss-sockjs'),{
 #   client: {
 #     debug: true
