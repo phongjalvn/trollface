@@ -20,7 +20,9 @@ ss.client.define("main", {
 
 FB.setAccessToken('access_token');
 
-app = express.createServer(ss.http.middleware, express.cookieParser(), express.errorHandler());
+app = express.createServer(ss.http.middleware, express.logger(), express.bodyParser(), express.cookieParser(), express.session({
+  secret: "ILoveP2"
+}));
 
 app.all("/", function(req, res, next) {
   res.header("Access-Control-Allow-Origin", "*");
@@ -45,11 +47,9 @@ app.get("/full/:file", function(req, res) {
 });
 
 app.get("/gallery/:file", function(req, res) {
-  var params, r;
+  var params;
   params = req.params.file.replace(/\:/g, '/') + ".json";
-  return r = request.get("http://api.imgur.com/2/album/" + params).on('error', function() {
-    return console.log('Error');
-  }).pipe(res);
+  return request.get("http://api.imgur.com/2/album/" + params).pipe(res);
 });
 
 ss.client.formatters.add(require("ss-coffee"));

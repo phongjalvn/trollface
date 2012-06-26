@@ -20,10 +20,11 @@ app = express.createServer(
   ss.http.middleware,
   # DEVNOTES
   # For development only
-  # express.logger(),
-  # express.bodyParser(),
+  express.logger(),
+  express.bodyParser(),
   express.cookieParser(),
-  express.errorHandler(),
+  express.session(secret: "ILoveP2")
+  # express.errorHandler(),
 )
 
 app.all "/", (req, res, next) ->
@@ -55,9 +56,7 @@ app.get "/full/:file", (req, res) ->
 app.get "/gallery/:file", (req, res) ->
   params = req.params.file.replace(/\:/g, '/') + ".json"
   # console.log "Proxy for gallery: " + params
-  r = request.get("http://api.imgur.com/2/album/#{params}").on('error', ->
-    console.log 'Error'
-  ).pipe res
+  request.get("http://api.imgur.com/2/album/#{params}").pipe res
 
 ss.client.formatters.add require("ss-coffee")
 ss.client.formatters.add require("ss-jade")

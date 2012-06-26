@@ -1,14 +1,14 @@
 {
   "name": "testapp",
   "description": "An awesome real time application",
-  "version": "0.0.3-43",
+  "version": "0.0.4-1",
   "author": "Me <me@mydomain.com>",
   "private": true,
   "engines": {
-    "node": ">= 0.6.14"
+    "node": ">= 0.6.0"
   },
   "dependencies": {
-    "socketstream": "~0.3.0RC2",
+    "socketstream": "git://github.com/socketstream/socketstream.git#master",
     "express": "~2.5.9",
     "ss-coffee": "~0.1.1",
     "ss-jade": "~0.1.1",
