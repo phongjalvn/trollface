@@ -64,7 +64,15 @@ if (ss.env === "production") {
   ss.client.packAssets();
 }
 
-ss.ws.transport.use(require('ss-sockjs'));
+ss.ws.transport.use('socketio', {
+  client: {
+    transports: ['xhr-polling']
+  },
+  server: function(io) {
+    io.set("transports", ["xhr-polling"]);
+    return io.set("polling duration", 10);
+  }
+});
 
 app.stack = app.stack.concat(ss.http.middleware.stack);
 
