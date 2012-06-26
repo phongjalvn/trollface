@@ -19,6 +19,7 @@ class App extends P2.Controller
 
     window.fbAsyncInit = =>
       FB.init
+        #appId: "242635384971"
         appId: "252913768155075"
         channelUrl: "/channel.html"
         status: true
@@ -54,5 +55,4 @@ class App extends P2.Controller
         setTimeout ->
           @getLoginStatus()
         , 1000
-
 module.exports = App

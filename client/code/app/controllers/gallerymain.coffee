@@ -38,6 +38,7 @@ class GalleryMain extends P2.Controller
       @message.fadeOut()
       @append @images
       @append @galleries
+      $('#fb-login').fadeOut()
 
     P2.bind 'loader.show', =>
       @loadder.fadeIn()
