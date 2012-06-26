@@ -5,7 +5,7 @@
   "author": "Me <me@mydomain.com>",
   "private": true,
   "engines": {
-    "node": ">= 0.6.0"
+    "node": "~0.6.17"
   },
   "dependencies": {
     "socketstream": "git://github.com/socketstream/socketstream.git#master",
