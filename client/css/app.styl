@@ -117,7 +117,7 @@ aside
   height: 100%
   img
     display: block
-    max-width: 90%
+    max-width: 40%
     margin: 20px auto 160px
     border: 5px solid white
     box-shadow: 0 0 5px rgba(0,0,0,.5)
@@ -125,10 +125,15 @@ aside
 form
   background: #fff
   border-radius: 4px
-  display: table
-  width: 100%
+  display: none
+  width: 50%
   border-collapse: collapse
   box-shadow: inset 2px 2px 3px rgba(0,0,0,.2)
+  margin: 20px 0 20px 20px
+  float: left
+
+  h3
+    display: none
 
   input
     border: 0
@@ -136,6 +141,9 @@ form
     margin: 0
     outline: 0
 
+  p
+    text-align: center
+    padding: 10px
   li
     position: relative
     border-bottom: 1px lighten($blue, 30%) solid
@@ -159,8 +167,12 @@ form
       padding: 10px 15px
       line-height: 22px
 
+    .holder
+      absolute: left 120px top 3px
+      right: 0
+      bottom: 0
     input
-      width: 500px
+      width: 100%
 
     &.success:before
       content: "✓"
@@ -317,7 +329,7 @@ img
     display: inline-block
     transform: scale(.5)
     position: relative
-    margin: -50px -10px -50px -40px
+    margin: -25px -10px -50px -40px
     em
       font-size: 30px
     &:hover
@@ -347,12 +359,6 @@ img
     margin-top: 8px
   #fb-like
     margin-top: 10px
-  #fb-login .button
-    display:inline-block
-    background-image:url('http://cdn1.iconfinder.com/data/icons/aquaticus/24%20X%2024/facebook.png')
-    background-position: 5px 5px;
-    padding-left: 35px;
-    background-repeat: no-repeat;
 
   h2
     @extend header h1
@@ -365,11 +371,13 @@ img
   .submit
     float: right
     display: none
+  .button
+    display: inline-block
 
 .loader
-  fixed: top 0 left 0
-  bottom: 0
-  right: 0
+  fixed: top -55px left -55px
+  bottom: -55px
+  right: -45px
   box-shadow: 0 0 200px 20px #000 inset
   z-index: 9999
   text-align: center

@@ -24,13 +24,13 @@ GalleryMain = (function(_super) {
     '.images-wrapper': 'imgHolder',
     'footer .submit': 'footer',
     '.gallery-wrapper': 'galleryHolder',
-    '.message': 'message',
-    '.loader': 'loader'
+    '.message': 'message'
   };
 
   GalleryMain.prototype.events = {
     'click .green': 'formHandle',
-    'click .red': 'back'
+    'click .red': 'back',
+    'blur input': 'formCheck'
   };
 
   function GalleryMain() {
@@ -38,9 +38,9 @@ GalleryMain = (function(_super) {
 
     this.formHandle = __bind(this.formHandle, this);
 
-    this.checkIma = __bind(this.checkIma, this);
-
     this.launchEditor = __bind(this.launchEditor, this);
+
+    this.formCheck = __bind(this.formCheck, this);
 
     var _this = this;
     GalleryMain.__super__.constructor.apply(this, arguments);
@@ -60,15 +60,17 @@ GalleryMain = (function(_super) {
     ss.event.on('auth', function(userId) {
       _this.userId = userId;
       _this.message.fadeOut();
+      Gallery.fetch();
       _this.append(_this.images);
       _this.append(_this.galleries);
-      return $('#fb-login').fadeOut();
+      P2.trigger('loader.hide');
+      return $('#fb-login').hide();
     });
     P2.bind('loader.show', function() {
-      return _this.loadder.fadeIn();
+      return $('.loader').fadeIn();
     });
     P2.bind('loader.hide', function() {
-      return _this.loader.fadeOut();
+      return $('.loader').fadeOut();
     });
     P2.bind('gallery.show', function() {
       _this.formHolder.slideUp();
@@ -83,6 +85,7 @@ GalleryMain = (function(_super) {
       _this.formHolder.find('img').remove();
       return _this.formHolder.append("<img src='" + imgurl + "' id='featherimage'/>").slideDown(500, function() {
         _this.launchEditor('featherimage', _this.imgUrl);
+        P2.trigger('loader.show');
         _this.footer.fadeIn();
         _this.formHolder.css('overflow-y', 'auto');
         return _this.formHolder.find('.message').text(title);
@@ -91,64 +94,101 @@ GalleryMain = (function(_super) {
     this.render();
   }
 
-  GalleryMain.prototype.launchEditor = function(id, src) {
-    featherEditor.launch({
-      image: id,
-      url: src
-    });
-    $("#" + id).hide();
-    return this.checkIma();
+  GalleryMain.prototype.formCheck = function(e) {
+    var ele;
+    ele = $(e.currentTarget);
+    if (ele.val() === '') {
+      return ele.parents('li').addClass('error').removeClass('success');
+    } else {
+      return ele.parents('li').addClass('success').removeClass('error');
+    }
   };
 
-  GalleryMain.prototype.checkIma = function(id, src) {
-    var _this = this;
-    return setTimeout(function() {
-      var ima;
-      ima = $('#avpw_aviary_about');
-      if (ima.length > 0) {
-        return ima.remove();
-      } else {
-        return _this.checkIma;
+  GalleryMain.prototype.launchEditor = function(id, src) {
+    return window.featherEditor = new Aviary.Feather({
+      apiKey: "b073f6881",
+      appendTo: "feather",
+      minimumStyling: true,
+      theme: "black",
+      noCloseButton: true,
+      language: "vi",
+      tools: "all",
+      maxSize: "670",
+      openType: "inline",
+      onLoad: function() {
+        featherEditor.launch({
+          image: id,
+          url: src
+        });
+        return $("#" + id).hide();
+      },
+      onReady: function() {
+        $('#avpw_aviary_about').html('<p>Copyright 2012. Vietprotocol</p>');
+        return P2.trigger('loader.hide');
+      },
+      onSaveButtonClicked: function() {
+        return P2.trigger('loader.show');
+      },
+      onError: function() {
+        $('.message').text('An error occured! Reloading browser...');
+        return setTimeout(function() {
+          return window.localtion = window.location;
+        }, 2000);
+      },
+      onSave: function(imageID, newURL) {
+        var img;
+        featherEditor.close();
+        img = $("#" + imageID);
+        return $.post("http://api.imgur.com/2/upload.json", {
+          key: "6a29ef3026a6c6343b65646f222b2dd2",
+          image: newURL,
+          type: "url"
+        }, function(res) {
+          res = jQuery.parseJSON(res);
+          $('.message').text($('aside h3').text());
+          return img.attr("src", res.upload.links.original).load(function() {
+            img.fadeIn();
+            P2.trigger('loader.hide');
+            $('aside form').css('display', 'block');
+            return $("#posttowall, .submit").css("display", "inline-block");
+          });
+        });
       }
-    }, 500);
+    });
   };
 
   GalleryMain.prototype.formHandle = function(e) {
-    var imgUrl;
+    var imgUrl, message;
     e.preventDefault();
     this.imgHolder.fadeIn();
     this.galleryHolder.fadeIn();
     this.formHolder.fadeOut();
     this.footer.fadeOut();
+    this.form.slideUp();
     $('#posttowall').hide();
     imgUrl = $('#featherimage').attr('src');
-    return ss.rpc('user.makePost', imgUrl, function() {
+    message = $('input#message').val();
+    return ss.rpc('user.makePost', imgUrl, message, function() {
       return P2.trigger('loader.show');
     });
   };
 
   GalleryMain.prototype.back = function() {
-    var _this = this;
     this.imgHolder.show();
     this.galleryHolder.fadeIn();
     $('footer .submit').hide();
     this.imgHolder.scrollTo('.current');
     this.formHolder.slideUp();
+    this.form.slideUp();
     this.footer.fadeOut();
-    this.imgHolder.find('.last').waypoint(function(e, dir) {
-      return _this.loadgallery();
-    }, {
-      triggerOnce: true,
-      context: '.images-wrapper',
-      offset: '100%'
-    });
     $('#posttowall').hide();
     return featherEditor.close();
   };
 
   GalleryMain.prototype.render = function() {
     this.append(ss.tmpl['gallery-login'].render());
-    return this.append(ss.tmpl['gallery-footer'].render());
+    this.append(ss.tmpl['gallery-footer'].render());
+    return this.append(ss.tmpl['gallery-loader'].render());
   };
 
   return GalleryMain;

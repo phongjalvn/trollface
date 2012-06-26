@@ -51,6 +51,7 @@ class Images extends P2.Controller
 
   showForm: (e)=>
     e.preventDefault()
+    P2.trigger('loader.show')
     ele = $(e.currentTarget)
     @gallery.find('.current').removeClass('current')
     ele.parents('li').addClass('current')

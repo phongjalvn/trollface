@@ -19,23 +19,29 @@ class App extends P2.Controller
 
     window.fbAsyncInit = =>
       FB.init
-        #appId: "242635384971"
+        #DEVNOTES
+        # appId: "242635384971"
         appId: "252913768155075"
         channelUrl: "/channel.html"
         status: true
         cookie: true
         xfbml: true
 
-      FB.Event.subscribe "auth.login", (response) ->
+      FB.getLoginStatus (response) ->
+        if response.status is "connected"
+          ss.rpc 'user.auth', response.authResponse
+        else
+          P2.trigger('loader.hide')
+          window.FBReady = true
+
+      FB.Event.subscribe "auth.authResponseChange", (response) ->
         if response.status is 'connected'
-          ss.rpc 'user.auth', response.authResponse, ()->
-            $('.loader').transition
-              opacity: 1
-              top: 0
+          ss.rpc 'user.auth', response.authResponse
+        else
+          P2.trigger('loader.hide')
+          window.FBReady = true
 
       FB.Canvas.setAutoGrow()
-
-      @getLoginStatus()
 
     ((d, s, id) ->
       js = undefined
@@ -47,12 +53,4 @@ class App extends P2.Controller
       fjs.parentNode.insertBefore js, fjs
     ) document, "script", "facebook-jssdk"
 
-  getLoginStatus: =>
-    FB.getLoginStatus (response)=>
-      if response.status is 'connected'
-        ss.rpc 'user.auth', response.authResponse
-      else
-        setTimeout ->
-          @getLoginStatus()
-        , 1000
 module.exports = App

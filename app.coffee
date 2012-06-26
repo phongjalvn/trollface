@@ -18,11 +18,12 @@ FB.setAccessToken('access_token')
 
 app = express.createServer(
   ss.http.middleware,
-  express.logger(),
-  express.bodyParser(),
+  # DEVNOTES
+  # For development only
+  # express.logger(),
+  # express.bodyParser(),
   express.cookieParser(),
-  # express.router(routes)
-  express.session(secret: "ILoveP2")
+  express.errorHandler(),
 )
 
 app.all "/", (req, res, next) ->
@@ -41,21 +42,22 @@ app.get "/thumb/:file", (req, res) ->
   res.redirect "http://i.imgur.com/" + req.params.file
 
 app.get "/full/:file", (req, res) ->
-  request.get("http://i.imgur.com/" + req.params.file).pipe res
+  res.redirect "http://i.imgur.com/" + req.params.file
+  # request.get("http://i.imgur.com/" + req.params.file).pipe res
 
-# imgur
+#############################################
+# DEVNOTES
+# imgur API register your at www.imgur.com
 # c552b7b8ecfcaa004fb792fe3ec07eeb04fdbda39
 # c51140b1a8cd1b446a08d627eda1daa4
-#
-app.get "/album/:file", (req, res) ->
-  params = req.params.file.replace(/\:/g, '/') + ".json"
-  # console.log "Proxy for gallery: " + params
-  request.get("http://imgur.com/r/" + params).pipe res
+#############################################
 
 app.get "/gallery/:file", (req, res) ->
   params = req.params.file.replace(/\:/g, '/') + ".json"
   # console.log "Proxy for gallery: " + params
-  request.get("http://api.imgur.com/2/album/#{params}").pipe res
+  r = request.get("http://api.imgur.com/2/album/#{params}").on('error', ->
+    console.log 'Error'
+  ).pipe res
 
 ss.client.formatters.add require("ss-coffee")
 ss.client.formatters.add require("ss-jade")
@@ -64,7 +66,8 @@ ss.client.templateEngine.use require("ss-hogan")
 
 ss.client.packAssets() if ss.env is "production"
 
-# ss.ws.transport.use(require('ss-sockjs'))
+ss.ws.transport.use(require('ss-sockjs'))
+# For development only
 # ss.ws.transport.use(require('ss-sockjs'),{
 #   client: {
 #     debug: true

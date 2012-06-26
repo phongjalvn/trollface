@@ -6,10 +6,9 @@ html(lang="en")
 
     meta(property='og:title', content='Test app')
     meta(property='og:type', content='Fun')
-    meta(property='og:url', content='')
-    meta(property='og:image', content='')
-    //meta(property='fb:app_id', content='242635384971')
-    meta(property='fb:app_id', content='252913768155075')
+    meta(property='og:url', content='http://www.vietprotocol.com')
+    meta(property='og:image', content='http://vietprotocol.com/images/logo-vietpro.png')
+    meta(property="og:description", content='Công ty thiết kế web VietProtocol cung cấp dịch vụ thiết kế website chuyên nghiệp, tư vấn giải pháp kinh doanh tổng thể trên Internet, tối ưu hóa lợi nhuận')
 
     //if IE
       script(type='text/javascript')
@@ -22,26 +21,3 @@ html(lang="en")
     #main
     #fb-root
     script(src='https://dme0ih8comzn4.cloudfront.net/js/feather.js')
-    script
-      window.featherEditor = new Aviary.Feather({
-        apiKey: "b073f6881",
-        appendTo: "feather",
-        minimumStyling: true,
-        theme: "black",
-        noCloseButton: true,
-        language: "vi",
-        tools: "all",
-        maxSize: "670",
-        openType: "inline",
-        onSave: function(imageID, newURL){
-          featherEditor.close();
-          img = $("#"+imageID);
-          $.post("http://api.imgur.com/2/upload.json",{key: '6a29ef3026a6c6343b65646f222b2dd2', image: newURL, type: 'url'}, function(res) {
-            res = jQuery.parseJSON(res);
-            img.attr('src', res.upload.links.original).load(function(){
-              img.fadeIn();
-              $('#posttowall, .submit').fadeIn();
-            });
-          });
-        }
-      });

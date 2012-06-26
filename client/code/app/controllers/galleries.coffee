@@ -12,8 +12,6 @@ class Galleries extends P2.Controller
     '.loader'    : 'loader'
 
   events:
-    'mouseover li' : 'mouseover'
-    'mouseout li'  : 'mouseout'
     'click li'     : 'showGallery'
 
   constructor: ->
@@ -26,7 +24,7 @@ class Galleries extends P2.Controller
       @render(arguments...)
       @items.addClass('animated')
       setTimeout =>
-        P2.trigger('loader.hide')
+        P2.trigger('loader.hide') if FBReady?
       , 2000
 
     @gallery.hover =>
@@ -34,23 +32,16 @@ class Galleries extends P2.Controller
     , =>
       @gallery.removeClass('hover')
 
-    Gallery.fetch()
-
   render: (items = []) =>
     @html '<ul class="gallery"></ul>'
     for item in items
       @gallery.append ss.tmpl['gallery-item'].render(item)
 
-  mouseover: (e)->
-    ele = $(e.currentTarget)
-
-  mouseout: (e)->
-    ele = $(e.currentTarget)
-
   showGallery: (e)=>
     ele = $(e.currentTarget)
     @gallery.find('.current').removeClass('current')
     ele.addClass('current')
+    P2.trigger('loader.show')
     P2.trigger 'gallery.show', ele.attr('rel')
     if !@isShow?
       @isShow = true

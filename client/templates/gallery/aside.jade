@@ -1,15 +1,21 @@
 aside
   #feather
     h2.message
-  // form(action='/fb', method='post')
-  //   ul
-  //     li
-  //       label(for='q1') Dong 1:
-  //       input#q1
-  //     li
-  //       label(for='q2') Dong 2:
-  //       input#q2
-  //     li
-  //       label(for='q3') Dong 3:
-  //       input#q3
-  //     input#q4(type='hidden')
+  form#posttowall(action='/fb', method='post')
+    h3 Thêm tiêu đề
+    ul
+      li
+        label(for='message') Nội dung:
+        .holder
+          input#message(name='message')
+      // li
+      //   label(for='q2') Dong 2:
+      //   .holder
+      //     input#q2
+      // li
+      //   label(for='q3') Dong 3:
+      //   .holder
+      //     input#q3
+      // input#q4(type='hidden')
+    p
+      a.button.green(href="javascript:;") Đăng hình lên wall

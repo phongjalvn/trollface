@@ -19,8 +19,9 @@ exports.actions = (req, res, ss) ->
       req.session.setUserId response.username
       ss.publish.user(req.session.userId, 'auth', req.session.userId)
 
-  makePost: (imgUrl)->
+  makePost: (imgUrl, message)->
     FB.options({accessToken: req.session.fb.accessToken})
-    FB.api "/#{req.session.userId}/photos","post", {name: "Test tao lao bi dao", url: "#{imgUrl}"}, (response)->
+    FB.api "/#{req.session.userId}/photos","post", {name: "#{message} - Tạo status độc tại https://apps.facebook.com/fb-jstest/", url: "#{imgUrl}"}, (response)->
       if response?.error then return
       ss.publish.user(req.session.userId, 'postSuccess', response)
+
