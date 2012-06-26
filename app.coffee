@@ -63,7 +63,7 @@ ss.client.formatters.add require("ss-jade")
 ss.client.formatters.add require("ss-stylus")
 ss.client.templateEngine.use require("ss-hogan")
 
-ss.client.packAssets() if ss.env is "production"
+# ss.client.packAssets() if ss.env is "production"
 
 # ss.ws.transport.use(require('ss-sockjs'))
 ss.ws.transport.use('socketio', {
